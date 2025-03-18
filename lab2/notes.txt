@@ -1,0 +1,10 @@
+1. Code Blocks: Python uses indentation for code blocks, while Java uses curly braces {}.
+2. Variable Declaration: Python does not require type declarations, while Java does.
+3. Printing Output: Python uses print(), while Java uses System.out.println().
+4. Function Definition: Python uses def, while Java uses explicit return types.
+5. Classes and Objects: Python does not require specifying instance variables, while Java does.
+6. Boolean Values: Python uses True and False, while Java uses true and false.
+7. Comments: Python uses # for single-line comments, while Java uses //.
+8. Lists vs. Arrays: Python uses lists ([]), while Java primarily uses arrays (new type[]).
+9. Exception Handling: Python uses except, while Java uses catch.
+10. Java requires semicolons ';' at the end of statements, unlike Python.

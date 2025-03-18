@@ -1,0 +1,5 @@
+Lab 5 - Explaining why the behaviour of set is not very useful.
+
+Initial issue with Set:
+- The Set stores unique values, but since ObjectContainer does not initially override equals() and hashCode(), each new instance is treated as a different object, even if it holds the same value.
+- This results in duplicate values being stored in the Set, making it ineffective as that is one of the main purposes of using a Set type object. 
