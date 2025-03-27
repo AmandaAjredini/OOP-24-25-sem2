@@ -1,0 +1,170 @@
+model PetsSys
+
+-- Classes
+class Pet
+    attributes
+        name : String
+        weight : Real
+        habitat : String
+    operations
+        eat(food : String)
+        begin 
+            self.weight := self.weight + 2.0;
+        end
+
+        adoption(home : String)
+        begin
+            self.habitat := home;
+        end
+
+        makeNoise() : String
+        begin
+            Write('BAM');
+        end
+        abandonment()
+        begin 
+            self.habitat := null;
+        end
+
+    statemachines
+        psm States
+        states
+        newAnimal : initial
+        unAdopted [habitat = null]
+        adopted [habitat <> null]
+    transitions
+        newAnimal -> unAdopted { create }
+        unAdopted -> adopted { adoption() [habitat <> null] }
+        adopted -> unAdopted {abandonment() [habitat = null] }
+    end
+
+end
+
+
+class Bird < Pet
+    attributes
+        no_of_eggs : Integer
+    operations
+        birdCall() : String
+        begin
+            result := 'Caw';
+        end
+
+        layEgg()
+        begin
+            self.no_of_eggs := self.no_of_eggs + 1;
+        end
+end
+
+
+class Dog < Pet
+    attributes
+        fur_colour : String
+        isTrained : Boolean
+    operations
+        makeNoise() : String
+        begin
+            if self.isTrained then
+                result := 'bark';
+            else
+                result := 'growl';
+            end;
+        end
+end
+
+
+class Cat < Pet
+    attributes
+        tail_type : String
+        no_of_whiskers : Integer
+    operations
+        makeNoise() : String
+        begin
+            if self.no_of_whiskers > 14 then
+                result := 'Meow';
+            else 
+                result := '';
+            end;
+        end
+end
+
+
+class Person
+    attributes
+        name : String
+        age : Integer
+end
+
+class Owner < Person
+    attributes
+        no_of_pets : Integer
+    operations
+        feedPet(food : String)
+        begin
+            for pet in self.animals do
+                pet.eat(food);
+            end;
+        end
+
+        countPets()
+        begin
+            declare count : Integer;
+            
+            count := 0;
+
+            for pet in self.animals do
+                count := count + 1;
+            end;
+
+            self.no_of_pets := count;
+        end
+
+        -- Takes pet and new habitat 
+        adopt(pet : Pet, home : String)
+        begin 
+            insert (self, pet) into contains;
+            self.countPets();
+
+            pet.adoption(home);
+        end
+
+        abandon(pet :Pet)
+        begin 
+            delete (self, pet) from contains;
+            self.countPets();
+
+            pet.abandonment();
+        end
+        findPet(name : String)
+
+end
+
+-- Associations
+
+association contains between
+    Owner [1] role owner
+    Pet [1..*] role animals
+end
+
+
+-- Constraints
+
+constraints
+
+-- Owners cannot own pet already and must own it after adoption 
+context Owner::adopt(pet : Pet, home : String)
+pre preNewPet:
+    animals->excludes(pet)
+
+post postNewPet:
+    animals->includes(pet)
+
+-- Owners are limited to only 2 pets 
+context Owner::adopt(pet : Pet, home : String)
+post postPetLimit:
+    self.no_of_pets <= 2
+
+
+
+
+
